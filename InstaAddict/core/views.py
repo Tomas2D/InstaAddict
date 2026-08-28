@@ -1313,7 +1313,7 @@ class PostsViewList:
         logger.info("Open comments of post.")
         self.device.find(resourceIdMatches=ResourceID.ROW_FEED_BUTTON_COMMENT).click()
 
-    def _check_if_liked(self):
+    def _check_if_liked(self, _attempt: int = 0):
         logger.debug("Check if like succeeded in post view.")
         bnt_like_obj = self.device.find(
             resourceIdMatches=ResourceID.ROW_FEED_BUTTON_LIKE
@@ -1327,10 +1327,16 @@ class PostsViewList:
                 logger.debug("Like is not present.")
                 return False
         else:
+            # PATCHED by vaspoukaz: upstream recursed here without a bound, which hung the
+            # device for ~50 minutes on any screen without a like button (the
+            # clips viewer) and then died on RecursionError.
+            if _attempt >= 5:
+                logger.debug("No like button after 5 swipes, giving up.")
+                return False
             UniversalActions(self.device)._swipe_points(
                 direction=Direction.DOWN, delta_y=100
             )
-            return PostsViewList(self.device)._check_if_liked()
+            return PostsViewList(self.device)._check_if_liked(_attempt + 1)
 
     def _check_if_ad_or_hashtag(
         self, post_owner_obj
