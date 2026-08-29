@@ -335,9 +335,16 @@ class ActionUnfollowFollowers(Plugin):
                         _, last_interaction = storage.check_user_was_interacted(
                             username
                         )
-                        if following_status == FollowingStatus.NOT_IN_LIST:
+                        # PATCHED by vaspoukaz: upstream only skipped NOT_IN_LIST, so a
+                        # profile this bot merely LIKED (status "none") was
+                        # eligible — including one the human followed by hand.
+                        if following_status in (
+                            FollowingStatus.NOT_IN_LIST,
+                            FollowingStatus.NONE,
+                            FollowingStatus.SCRAPED,
+                        ):
                             logger.info(
-                                f"@{username} has not been followed by this bot. Skip."
+                                f"@{username} was not followed by this bot. Skip."
                             )
                             continue
                         elif not storage.can_be_unfollowed(
