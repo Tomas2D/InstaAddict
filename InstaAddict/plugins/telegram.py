@@ -41,6 +41,7 @@ def telegram_bot_send_text(bot_api_token, bot_chat_ID, text):
         logger.error(f"Error sending Telegram message: {e}")
         return None
 
+
 def telegram_bot_send_photo(bot_api_token, bot_chat_id, photo_path, caption=None):
     try:
         method = "sendPhoto"

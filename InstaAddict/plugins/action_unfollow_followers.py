@@ -564,9 +564,7 @@ class ActionUnfollowFollowers(Plugin):
                     "Telegram is not configured - skipping report of accounts without Unfollow option."
                 )
                 return
-            usernames_list = "\n".join(
-                f"\u2022 @{u}" for u in self.no_unfollow_option
-            )
+            usernames_list = "\n".join(f"\u2022 @{u}" for u in self.no_unfollow_option)
             text = (
                 f"*Accounts without the Unfollow option ({len(self.no_unfollow_option)}):*\n"
                 f"{usernames_list}"

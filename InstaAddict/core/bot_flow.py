@@ -34,6 +34,7 @@ from InstaAddict.core.utils import (
     get_value,
     head_up_notifications,
     kill_atx_agent,
+    random_sleep,
 )
 from InstaAddict.core.utils import load_config as load_utils
 from InstaAddict.core.utils import (
@@ -48,7 +49,12 @@ from InstaAddict.core.utils import (
     stop_bot,
     wait_for_next_session,
 )
-from InstaAddict.core.views import AccountView, ProfileView, TabBarView, UniversalActions
+from InstaAddict.core.views import (
+    AccountView,
+    ProfileView,
+    TabBarView,
+    UniversalActions,
+)
 from InstaAddict.core.views import load_config as load_views
 
 
@@ -281,12 +287,28 @@ def start_bot(**kwargs):
                 break
             if profile_view.getUsername() != session_state.my_username:
                 logger.debug("Not in your main profile.")
-                for _ in range(3):
+                recovered = False
+                for _ in range(5):
                     if tab_bar_view.is_tab_bar_visible():
+                        recovered = True
                         break
                     logger.debug("Tab bar not visible, go back.")
                     device.back()
-                tab_bar_view.navigateToProfile()
+                    random_sleep(1, 2, modulable=False)
+                if recovered:
+                    tab_bar_view.navigateToProfile()
+                    if profile_view.getUsername() != session_state.my_username:
+                        logger.warning(
+                            f"Navigated to profile but still not on {session_state.my_username}'s "
+                            "profile. Skipping this job to avoid running it on the wrong screen."
+                        )
+                        continue
+                else:
+                    logger.warning(
+                        "Could not recover a visible tab bar after 5 attempts. "
+                        "Skipping this job to avoid running it on the wrong screen."
+                    )
+                    continue
             if plugin in unfollow_jobs:
                 if configs.args.scrape_to_file is not None:
                     logger.warning(

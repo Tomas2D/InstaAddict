@@ -144,7 +144,11 @@ class DeviceFacade:
             try:
                 frames = deque(maxlen=self._fps * 30)
                 if hasattr(self._d, "path2url"):
-                    pipelines = [self._pipe_limit, self._pipe_convert, self._pipe_resize]
+                    pipelines = [
+                        self._pipe_limit,
+                        self._pipe_convert,
+                        self._pipe_resize,
+                    ]
                     _iter = self._iter_minicap()
                     for p in pipelines:
                         _iter = p(_iter)
@@ -334,6 +338,7 @@ class DeviceFacade:
                 last_exc = e
                 time.sleep(1)
         raise DeviceFacade.JsonRpcError(last_exc)
+
     @staticmethod
     def sleep_mode(mode):
         mode = SleepTime.DEFAULT if mode is None else mode

@@ -691,6 +691,7 @@ def handle_followers(
         username,
     )
 
+
 def check_and_report_restricted_list(device, session_state, target_username):
     no_results_heading = device.find(
         className=ClassName.TEXT_VIEW,
@@ -731,6 +732,7 @@ def check_and_report_restricted_list(device, session_state, target_username):
         logger.error(f"Failed to send Telegram restriction alert: {e}")
 
     return True
+
 
 def iterate_over_followers(
     self,
@@ -863,6 +865,14 @@ def iterate_over_followers(
             logger.info("Navigating back to SEARCH")
             device.back()
             device.back()
+            # Check if we landed on active search-input screen (no tab bar)
+            # If so, press back again to dismiss it
+            search_input = device.find(
+                resourceId=self.ResourceID.ACTION_BAR_SEARCH_EDIT_TEXT
+            )
+            if search_input.exists():
+                logger.debug("On active search-input screen, pressing back to dismiss")
+                device.back()
             return
         elif len(screen_iterated_followers) > 0:
             load_more_button = device.find(
@@ -893,6 +903,16 @@ def iterate_over_followers(
                 logger.info("End of followers list, navigating back to SEARCH")
                 device.back()
                 device.back()
+                # Check if we landed on active search-input screen (no tab bar)
+                # If so, press back again to dismiss it
+                search_input = device.find(
+                    resourceId=self.ResourceID.ACTION_BAR_SEARCH_EDIT_TEXT
+                )
+                if search_input.exists():
+                    logger.debug(
+                        "On active search-input screen, pressing back to dismiss"
+                    )
+                    device.back()
                 return
 
             need_swipe = screen_skipped_followers_count == len(

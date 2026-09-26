@@ -1,5 +1,32 @@
 # Changelog
 
+## v1.0.3 — Instagram compatibility & navigation reliability
+
+A further round of fixes for running InstaAddict against newer Instagram versions, with improvements to navigation, post interaction, comments, follower iteration, and package dependencies.
+
+### Instagram UI compatibility
+
+- Updated the test target to Instagram `447.0.0.55.81`.
+- Fixed navigation to Search so the bot lands directly on Instagram's active search-input screen instead of the Search tab landing page.
+- Fixed Stories sometimes opening the profile picture instead of the intended story.
+- Improved media type detection to correctly distinguish photo and video posts on newer Instagram versions.
+- Fixed comment handling and validation on current Instagram layouts.
+- Reworked unfollow to use the direct "Following" button when available, falling back to the three-dots menu only when it isn't present.
+- Recognize "Follow back" as a valid unfollow success state instead of treating it as a failure.
+- Fixed navigation after completing blogger follower iteration, preventing the bot from crashing when moving to the next blogger.
+- Fixed recovery after leaving the main profile: when the tab bar cannot be recovered, the job is skipped instead of continuing from the wrong screen.
+
+### Stability & reliability
+
+- Improved navigation recovery when a job finishes while the bot is still inside a nested Instagram screen without a visible tab bar.
+- Prevented jobs from running blindly when the bot cannot return to the expected main navigation state.
+- Improved handling of follower and blogger navigation across stacked Instagram screens.
+
+### Setup & packaging
+
+- Synchronized `pyproject.toml` dependencies with `requirements.txt`.
+- Updated the project version to `1.0.3`.
+
 ## v1.0.2 — Instagram compatibility & reliability fixes
 
 Two weeks of accumulated fixes for running InstaAddict against current Instagram versions (tested against 440.0.0.46.86), plus dependency and packaging cleanup.

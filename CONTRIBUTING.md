@@ -28,7 +28,7 @@ We have a detailed FAQ and docs website where you can learn how to use InstaAddi
 
 If you can't find the answer or want to chat with other people using InstaAddict; you can join the official InstaAddict discord server. Here there are many active members of the community - as well as the development team -  who chime in with helpful advice if you have questions.
 
-  - [Discord Server](https://discord.com/channels/771481743471017994) - If you've never joined before, use the [Invite Link](https://discord.com/invite/NK8PNEFGFF)
+  - [Discord Server](https://discord.gg/dtuaVEuuu) - If you've never joined before, use the [Invite Link](https://discord.gg/PvxsP8HFa)
     > **Note:** Even though Discord is a chat service, sometimes it takes several hours for community members to respond &mdash; please be patient!
     - Use the `#general` channel for general questions or discussion about InstaAddict
     - Use the `#community-support` channel for help with issues or questions about running the bot
@@ -40,7 +40,7 @@ If you can't find the answer or want to chat with other people using InstaAddict
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [InstaAddict Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior via the [Discord Server](https://discord.com/invite/NK8PNEFGFF). Please direct them to any of the project owners via DM.
+This project and everyone participating in it is governed by the [InstaAddict Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior via the [Discord Server](https://discord.gg/PvxsP8HFa). Please direct them to any of the project owners via DM.
 
 <br />
 
@@ -50,7 +50,7 @@ This project and everyone participating in it is governed by the [InstaAddict Co
 
 This section guides you through submitting a bug report for InstaAddict. Following these guidelines helps maintainers and the community understand your report :pencil:, reproduce the behavior :computer: :computer:, and find related reports :mag_right:.
 
-Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](https://github.com/gramaddict/bot/blob/master/.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](https://github.com/joeahkim/instaaddict/blob/master/.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
@@ -58,11 +58,11 @@ Before creating bug reports, please check [this list](#before-submitting-a-bug-r
 
 * **Check the [docs](https://docs.gramaddict.org).** You might be able to find the cause of the problem and fix things yourself. Most importantly, check if you can reproduce the problem [in the latest version of InstaAddict](https://github.com/InstaAddict/bot/releases/latest).
 * **Check the [FAQs on the docs site](https://docs.gramaddict.org/#/?id=faq)** for a list of common questions and problems.
-* **Perform a [cursory search](https://github.com/search?q=+is%3Aissue+user%3Agramaddict)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
+* **Perform a [cursory search](https://github.com/search?q=is%3Aissue+user%3Ajoeahkim&type=issues)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [you have a valid bug report](#before-submitting-a-bug-report) and there is not an existing issue open for it; create an issue on the associated repository and provide the following information by filling in [the template](https://github.com/gramaddict/bot/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [you have a valid bug report](#before-submitting-a-bug-report) and there is not an existing issue open for it; create an issue on the associated repository and provide the following information by filling in [the template](https://github.com/joeahkim/InstaAddict/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
@@ -81,7 +81,7 @@ Provide more context by answering these questions:
 
 * **Can you reproduce the problem in every time** or was it a temporary issue with another open dialogue on your device?
 * **Did the problem start happening recently** (e.g. after updating to a new version of InstaAddict) or was this always a problem?
-* If the problem started happening recently, **can you reproduce the problem in an older version of InstaAddict?** What's the most recent version in which the problem doesn't happen? You can download older versions of InstaAddict from [the releases page](https://github.com/gramaddict/bot/releases)
+* If the problem started happening recently, **can you reproduce the problem in an older version of InstaAddict?** What's the most recent version in which the problem doesn't happen? You can download older versions of InstaAddict from [the releases page](https://github.com/joeahkim/InstaAddict/releases)
 
 Include details about your configuration and environment:
 
@@ -92,12 +92,12 @@ Include details about your configuration and environment:
 
 This section guides you through submitting an enhancement suggestion for InstaAddict, including completely new features and minor improvements to existing functionality. Following these guidelines helps maintainers and the community understand your suggestion :pencil: and find related suggestions :mag_right:.
 
-Before creating enhancement suggestions, please check [this list](#before-submitting-an-enhancement-suggestion) as you might find out that you don't need to create one. When you are creating an enhancement suggestion, please [include as many details as possible](#how-do-i-submit-a-good-enhancement-suggestion). Fill in [the template](https://github.com/gramaddict/bot/blob/master/.github/ISSUE_TEMPLATE/feature_request.md), including the steps that you imagine you would take if the feature you're requesting existed.
+Before creating enhancement suggestions, please check [this list](#before-submitting-an-enhancement-suggestion) as you might find out that you don't need to create one. When you are creating an enhancement suggestion, please [include as many details as possible](#how-do-i-submit-a-good-enhancement-suggestion). Fill in [the template](https://github.com/joeahkim/InstaAddict/blob/master/.github/ISSUE_TEMPLATE/feature_request.md), including the steps that you imagine you would take if the feature you're requesting existed.
 
 #### Before Submitting An Enhancement Suggestion
 
 * **Check the [docs](https://doc.gramaddict.org).**  for tips — you might discover that the enhancement is already available. Most importantly, check if you're using [in the latest version of InstaAddict](https://github.com/InstaAddict/bot/releases/latest).
-* **Perform a [cursory search](https://github.com/search?q=+is%3Aissue+user%3Agramaddict)** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
+* **Perform a [cursory search](https://github.com/search?q=is%3Aissue+user%3Ajoeahkim&type=issues)** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
