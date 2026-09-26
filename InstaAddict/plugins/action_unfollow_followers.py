@@ -305,6 +305,8 @@ class ActionUnfollowFollowers(Plugin):
                 resourceIdMatches=self.ResourceID.USER_LIST_CONTAINER,
             )
             row_height, n_users = inspect_current_view(user_list)
+            # PATCHED by vaspoukaz: re-read rows after a profile visit
+            rescan = False
             for item in user_list:
                 cur_row_height = item.get_height()
                 if cur_row_height < row_height:
@@ -400,6 +402,7 @@ class ActionUnfollowFollowers(Plugin):
                             ],
                             job_name == "unfollow-any-followers",
                         )
+                        rescan = True
 
                     if unfollowed:
                         storage.add_interacted_user(
@@ -417,9 +420,13 @@ class ActionUnfollowFollowers(Plugin):
                         )
                     if unfollowed_count >= count or total_unfollows_limit_reached:
                         return
+                    if rescan:
+                        break
                 else:
                     logger.debug(f"Already checked {username}.")
 
+            if rescan:
+                continue
             if screen_iterated_followings != prev_screen_iterated_followings:
                 prev_screen_iterated_followings = screen_iterated_followings
                 logger.info("Need to scroll now.", extra={"color": f"{Fore.GREEN}"})
