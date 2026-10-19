@@ -2204,8 +2204,7 @@ class PostsGridView:
     def navigateToPost(self, row, col):
         post_list_view = self._get_post_view()
         post_list_view.wait(Timeout.MEDIUM)
-        OFFSET = 1  # row with post starts from index 1
-        row_view = post_list_view.child(index=row + OFFSET)
+        row_view = post_list_view.child(index=row)
         if not row_view.exists():
             return None, None, None
         post_view = row_view.child(index=col)
