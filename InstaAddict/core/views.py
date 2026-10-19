@@ -544,6 +544,7 @@ class PostsViewList:
             )
             gap_view_obj = self.device.find(index=-1, resourceIdMatches=containers_gap)
             obj1 = None
+            no_gap_layout = False
             for _ in range(3):
                 if not gap_view_obj.exists():
                     logger.debug("Can't find the gap obj, scroll down a little more.")
@@ -585,14 +586,52 @@ class PostsViewList:
                         "sponsored/ad post layout. Falling back to content "
                         "container bounds."
                     )
-                    fallback_media_bounds = self._get_current_media_bounds(
-                        containers_content
+                    no_gap_layout = True
+                    buttons_rows = self.device.find(
+                        resourceId=ResourceID.ROW_FEED_VIEW_GROUP_BUTTONS
                     )
-                    obj1 = (
-                        fallback_media_bounds["bottom"]
-                        if fallback_media_bounds
-                        else displayHeight * 0.75
+                    try:
+                        row_count = buttons_rows.count_items()
+                    except Exception:
+                        row_count = 0
+                    action_bar_exists, _, action_bar_bottom = (
+                        self._get_action_bar_position()
                     )
+                    row_bounds = []
+                    for row_index in range(row_count):
+                        row = self.device.find(
+                            index=row_index,
+                            resourceId=ResourceID.ROW_FEED_VIEW_GROUP_BUTTONS,
+                        )
+                        bounds = row.get_bounds()
+                        if (
+                            not action_bar_exists
+                            or bounds["bottom"] > action_bar_bottom
+                        ):
+                            row_bounds.append(bounds)
+                    if row_bounds:
+                        obj1 = min(row_bounds, key=lambda bounds: bounds["top"])[
+                            "bottom"
+                        ]
+                    else:
+                        fallback_media_bounds = self._get_current_media_bounds(
+                            containers_content
+                        )
+                        obj1 = (
+                            fallback_media_bounds["bottom"]
+                            if fallback_media_bounds
+                            else displayHeight * 0.75
+                        )
+            if no_gap_layout:
+                # Media may already be above the screen; use a long drag to
+                # carry the current post past the next post's position.
+                travel = max(obj1 - displayHeight * 0.15, displayHeight * 0.3)
+                start_y = min(displayHeight * 0.85, displayHeight * 0.15 + travel)
+                end_y = max(start_y - travel, displayHeight * 0.05)
+                self.device.swipe_points(
+                    displayWidth / 2, start_y, displayWidth / 2, end_y
+                )
+                return True
             media_bounds = self._get_current_media_bounds(containers_content)
             if media_bounds is None:
                 logger.debug("Can't find media bounds, using screen fallback.")
@@ -819,6 +858,13 @@ class PostsViewList:
         if not button_rows:
             return None
 
+        # The numeric control beside the heart is the exact count and is also
+        # the control used by open_likers_container(). Prefer it over the
+        # sometimes abbreviated or incomplete social-proof text below.
+        like_count_button = PostsViewList._find_like_count_button(nodes)
+        if like_count_button is not None:
+            return like_count_button
+
         likers = []
         for item in nodes:
             text = item["text"]
@@ -843,19 +889,54 @@ class PostsViewList:
                 return min(candidates, key=lambda item: item["bounds"]["top"])
         return None
 
+    @staticmethod
+    def _find_like_count_button(nodes) -> Optional[dict]:
+        like_buttons = sorted(
+            (n for n in nodes if n["resource_id"].endswith("row_feed_button_like")),
+            key=lambda n: n["bounds"]["top"],
+        )
+        for like in like_buttons:
+            lb = like["bounds"]
+            candidates = [
+                n
+                for n in nodes
+                if re.fullmatch(r"\d[\d,.]*\s?[kKmM]?", n["text"] or "")
+                and abs(n["bounds"]["top"] - lb["top"]) <= 10
+                and abs(n["bounds"]["bottom"] - lb["bottom"]) <= 10
+                and 0 <= n["bounds"]["left"] - lb["right"] <= 40
+            ]
+            if candidates:
+                return min(candidates, key=lambda n: n["bounds"]["left"])
+        return None
+
     def _get_number_of_likers_from_text(self, likes_view_text):
         likes = 0
         likes_view_text = PostsViewList._normalize_ig_text(likes_view_text).replace(
             ",", ""
         )
+        bare = re.fullmatch(
+            r"(?P<n>\d+(?:\.\d+)?)\s?(?P<s>[kKmM]?)", likes_view_text.strip()
+        )
+        if bare:
+            mult = {"": 1, "k": 1_000, "m": 1_000_000}[bare.group("s").lower()]
+            likes = int(float(bare.group("n")) * mult)
+            logger.info(f"This post has {likes} like(s).")
+            return likes
         matches_likes = re.search(
-            r"(?P<likes>\d+) (?:others|likes)", likes_view_text, re.IGNORECASE
+            r"(?P<likes>\d+(?:\.\d+)?)(?P<suffix>[kKmM]?)\s+(?:others|likes)\b",
+            likes_view_text,
+            re.IGNORECASE,
         )
         matches_view = re.search(
-            r"(?P<views>\d+) views", likes_view_text, re.IGNORECASE
+            r"(?P<views>\d+) views?", likes_view_text, re.IGNORECASE
         )
         if hasattr(matches_likes, "group"):
-            likes = int(matches_likes.group("likes"))
+            multiplier = {
+                "": 1,
+                "k": 1_000,
+                "m": 1_000_000,
+            }[matches_likes.group("suffix").lower()]
+            likes = int(float(matches_likes.group("likes")) * multiplier)
             logger.info(
                 f"This post has {likes if 'likes' in likes_view_text else likes + 1} like(s)."
             )
@@ -1131,6 +1212,32 @@ class PostsViewList:
                 )
                 return True, new_description, username, is_ad, is_hashtag, has_tags
             else:
+                post_buttons = self.device.find(
+                    resourceId=ResourceID.ROW_FEED_VIEW_GROUP_BUTTONS
+                )
+                if post_buttons.exists():
+                    button_rows = []
+                    for index in range(post_buttons.count_items()):
+                        row = self.device.find(
+                            index=index,
+                            resourceId=ResourceID.ROW_FEED_VIEW_GROUP_BUTTONS,
+                        )
+                        button_rows.append(row.get_bounds())
+                    profile_headers = self.device.find(
+                        resourceId=ResourceID.ROW_FEED_PROFILE_HEADER
+                    )
+                    header_tops = []
+                    for index in range(profile_headers.count_items()):
+                        header = self.device.find(
+                            index=index,
+                            resourceId=ResourceID.ROW_FEED_PROFILE_HEADER,
+                        )
+                        header_tops.append(header.get_bounds()["top"])
+                    if button_rows:
+                        current_row = min(button_rows, key=lambda bounds: bounds["top"])
+                        if any(top > current_row["bottom"] for top in header_tops):
+                            logger.info("This post hasn't the description...")
+                            return False, "", username, is_ad, is_hashtag, has_tags
                 gap_view_obj = self.device.find(resourceId=ResourceID.GAP_VIEW)
                 feed_composer = self.device.find(
                     resourceId=ResourceID.FEED_INLINE_COMPOSER_BUTTON_TEXTVIEW
@@ -1145,18 +1252,21 @@ class PostsViewList:
                 row_feed_profile_header = self.device.find(
                     resourceId=ResourceID.ROW_FEED_PROFILE_HEADER
                 )
-                if row_feed_profile_header.count_items() > 1:
+                if (
+                    not post_buttons.exists()
+                    and row_feed_profile_header.count_items() > 1
+                ):
                     logger.info("This post hasn't the description...")
                     return False, "", username, is_ad, is_hashtag, has_tags
-                profile_header_is_above = row_feed_profile_header.is_above_this(
-                    gap_view_obj if gap_view_obj.exists() else feed_composer
-                )
-                if profile_header_is_above is not None:
-                    if not profile_header_is_above:
-                        logger.info("This post hasn't the description...")
-                        return False, "", username, is_ad, is_hashtag, has_tags
+                if not post_buttons.exists():
+                    profile_header_is_above = row_feed_profile_header.is_above_this(
+                        gap_view_obj if gap_view_obj.exists() else feed_composer
+                    )
+                    if profile_header_is_above is not None:
+                        if not profile_header_is_above:
+                            logger.info("This post hasn't the description...")
+                            return False, "", username, is_ad, is_hashtag, has_tags
 
-                logger.debug(self.device.dump_hierarchy("window.xml"))
                 logger.debug(
                     f"Can't find the description of {username}'s post, try to swipe a little bit down."
                 )
