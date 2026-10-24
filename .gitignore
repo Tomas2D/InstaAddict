@@ -23,3 +23,6 @@ Pipfile.lock
 /logs/
 __pycache__/
 /run_multiple.py
+stuck_post.xml
+stuck_*.xml
+stuck_*.png

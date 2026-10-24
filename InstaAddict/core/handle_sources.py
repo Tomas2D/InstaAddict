@@ -310,15 +310,27 @@ def handle_likers(
     post_description = ""
     nr_same_post = 0
     nr_same_posts_max = 3
+    last_post_key = None
     while True:
-        flag, post_description, _, _, _, _ = PostsViewList(device)._check_if_last_post(
-            post_description, current_job
-        )
+        flag, post_description, post_owner, _, _, _ = PostsViewList(
+            device
+        )._check_if_last_post(post_description, current_job)
         has_likers, number_of_likers = PostsViewList(device)._find_likers_container()
+        if not post_description:
+            # Caption-less layouts need a stable fallback key to detect a feed
+            # that stopped advancing.
+            post_key = (post_owner, number_of_likers)
+            if post_key == last_post_key:
+                flag = True
+            last_post_key = post_key
+        else:
+            last_post_key = None
         if flag:
             nr_same_post += 1
             logger.info(f"Warning: {nr_same_post}/{nr_same_posts_max} repeated posts.")
             if nr_same_post == nr_same_posts_max:
+                logger.warning("Feed is not advancing, saving stuck_post.xml.")
+                device.dump_hierarchy("stuck_post.xml")
                 logger.info(
                     f"Scrolled through {nr_same_posts_max} posts with same description and author. Finish.",
                     extra={"color": f"{Fore.CYAN}"},

@@ -105,6 +105,7 @@ class ResourceID:
         self.REEL_RING = f"{APP_ID}:id/reel_ring"
         self.REEL_VIEWER_IMAGE_VIEW = f"{APP_ID}:id/reel_viewer_image_view"
         self.REEL_VIEWER_MEDIA_CONTAINER = f"{APP_ID}:id/reel_viewer_media_container"
+        self.REEL_VIEWER_TEXT_CONTAINER = f"{APP_ID}:id/reel_viewer_text_container"
         self.REEL_VIEWER_TIMESTAMP = f"{APP_ID}:id/reel_viewer_timestamp"
         self.REEL_VIEWER_TITLE = f"{APP_ID}:id/reel_viewer_title"
         self.RESTRICTED_ACCOUNT_TITLE = f"{APP_ID}:id/restricted_account_title"
@@ -125,6 +126,9 @@ class ResourceID:
         )
         self.ROW_FEED_PHOTO_IMAGEVIEW = f"{APP_ID}:id/row_feed_photo_imageview"
         self.ROW_FEED_PHOTO_PROFILE_NAME = f"{APP_ID}:id/row_feed_photo_profile_name"
+        self.ROW_FEED_PHOTO_PROFILE_IMAGEVIEW = (
+            f"{APP_ID}:id/row_feed_photo_profile_imageview"
+        )
         self.ROW_FEED_TEXTVIEW_LIKES = f"{APP_ID}:id/row_feed_textview_likes"
         self.ROW_FEED_VIEW_GROUP_BUTTONS = f"{APP_ID}:id/row_feed_view_group_buttons"
         self.ROW_HASHTAG_TEXTVIEW_TAG_NAME = (
