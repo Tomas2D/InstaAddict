@@ -2839,11 +2839,21 @@ class CurrentStoryView:
         reel_exists = reel_viewer_title.exists(ignore_bug=True)
         if reel_exists == "BUG!":
             return reel_exists
-        return (
-            ""
-            if not reel_exists
-            else reel_viewer_title.get_text(error=False).replace(" ", "")
+        if reel_exists:
+            username = reel_viewer_title.get_text(error=False).replace(" ", "")
+            if username:
+                return username
+
+        story_header = self.device.find(
+            resourceId=ResourceID.REEL_VIEWER_TEXT_CONTAINER,
         )
+        if not story_header.exists():
+            return ""
+        description = PostsViewList._normalize_ig_text(story_header.get_desc())
+        match = re.match(r"^(.+?)'s story(?:,|$)", description, re.IGNORECASE)
+        if match:
+            return match.group(1).strip()
+        return story_header.get_text(error=False).replace(" ", "")
 
     def getTimestamp(self) -> Optional[datetime.datetime]:
         reel_viewer_timestamp = self.device.find(
