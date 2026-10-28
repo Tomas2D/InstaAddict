@@ -39,16 +39,16 @@
 
 ## Table of contents
 
-* [About this project](#about-this-project)
-* [Why automate your Instagram?](#why-should-i-automate-my-instagram-account)
-* [Why InstaAddict over other bots?](#i-saw-there-are-a-lot-of-similar-projects-on-github-why-should-i-choose-this-one)
-* [How it works](#so-this-bot-does-not-use-api)
-* [Compatibility / known working versions](#compatibility--known-working-versions)
-* [Features](#cool-what-can-i-do-with-this-bot)
-* [Quick start](#quick-start)
-* [Common setup issues](#common-setup-issues)
-* [Support this project](#support-this-project)
-* [Community](#talk-botty-with-us)
+- [About this project](#about-this-project)
+- [Why automate your Instagram?](#why-should-i-automate-my-instagram-account)
+- [Why InstaAddict over other bots?](#i-saw-there-are-a-lot-of-similar-projects-on-github-why-should-i-choose-this-one)
+- [How it works](#so-this-bot-does-not-use-api)
+- [Compatibility / known working versions](#compatibility--known-working-versions)
+- [Features](#cool-what-can-i-do-with-this-bot)
+- [Quick start](#quick-start)
+- [Common setup issues](#common-setup-issues)
+- [Support this project](#support-this-project)
+- [Community](#talk-botty-with-us)
 
 <br />
 
@@ -86,7 +86,7 @@ Yes, absolutely. This bot gets you visibility — it doesn't replace having some
 
 ## I don't know where to start...
 
-That's fine — this README walks you through the whole setup. If you get stuck anywhere, the [Discord community](https://discord.gg/PvxsP8HFa) is there to help.
+That's fine — this README walks you through the whole setup. If you get stuck anywhere, the [Discord community](https://discord.gg/EDZUdbNnyY) is there to help.
 
 ## I've seen a lot of similar projects on GitHub — why this one?
 
@@ -110,15 +110,15 @@ No — please configure sensible limits. Real humans don't scroll and interact w
 
 Yes for the initial setup, but the bot itself can run [directly on your phone via Termux](https://docs.gramaddict.org/#/termux) once configured. You can host it on:
 
-* your computer (Windows, macOS, or Linux)
-* a Raspberry Pi (a cheap, low-power Linux box that can run this unattended)
+- your computer (Windows, macOS, or Linux)
+- a Raspberry Pi (a cheap, low-power Linux box that can run this unattended)
 
 ### Choosing between a physical device or an emulator
 
 Both work. If you're going the emulator route, there's one thing that trips people up: **Instagram's APK is ARM-only**, so your emulator needs either a native ARM system image or built-in ARM translation. Recommended:
 
-* **Windows:** [MEmu](https://www.memuplay.com/) or [LDPlayer](https://www.ldplayer.net/) — both include ARM translation out of the box.
-* **macOS:** [Android Studio](https://developer.android.com/studio) (installable via `brew install --cask android-studio`), but make sure you pick an **ARM64 system image** in the AVD manager, not the default x86_64 one — an x86-only image will fail to install or crash Instagram.
+- **Windows:** [MEmu](https://www.memuplay.com/) or [LDPlayer](https://www.ldplayer.net/) — both include ARM translation out of the box.
+- **macOS:** [Android Studio](https://developer.android.com/studio) (installable via `brew install --cask android-studio`), but make sure you pick an **ARM64 system image** in the AVD manager, not the default x86_64 one — an x86-only image will fail to install or crash Instagram.
 
 <br />
 
@@ -141,46 +141,45 @@ If something breaks on a newer Instagram version, please [open an issue](https:/
 
 # Cool! What can I do with this bot?
 
-* Works without rooting
-* Works with both emulators and physical devices
-* Can run stand-alone (no computer required after setup, via Termux)
-* Realistic, randomized human-like delays and actions
-* Auto-creates your account config folder from a template on first run
-* Watches stories while interacting
-* Comments with emojis and [spintax logic](https://github.com/InstaAddict/docs/blob/main/configuration.md#spintax-support)
-* Sends PMs
-* Types like a human (suggestion-faking rather than key-by-key typing)
-* Browses carousels and watches their contents
-* Watches videos for a configurable duration
-* Session scheduling
-* Telegram activity reports
-* Multiple actions per session
-* Extensive, customizable limits to keep your account safe from soft bans
-* Available interaction jobs:
+- Works without rooting
+- Works with both emulators and physical devices
+- Can run stand-alone (no computer required after setup, via Termux)
+- Realistic, randomized human-like delays and actions
+- Auto-creates your account config folder from a template on first run
+- Watches stories while interacting
+- Comments with emojis and [spintax logic](https://github.com/InstaAddict/docs/blob/main/configuration.md#spintax-support)
+- Sends PMs
+- Types like a human (suggestion-faking rather than key-by-key typing)
+- Browses carousels and watches their contents
+- Watches videos for a configurable duration
+- Session scheduling
+- Telegram activity reports
+- Multiple actions per session
+- Extensive, customizable limits to keep your account safe from soft bans
+- Available interaction jobs:
+  - a user's followers or following
+  - a hashtag's top or recent post likers
+  - a hashtag's top or recent posts
+  - a place's top or recent post likers
+  - a place's top or recent posts
+  - a specific user's post likers
+  - a single blogger
+  - your own feed
+  - a list of users from a `.txt` file
+  - posts from a list of links in a `.txt` file
+  - unfollow any followers
+  - unfollow followers the bot itself followed
+  - unfollow followers the bot followed who don't follow back
+  - unfollow from a `.txt` list
+  - scrape mode — collect usernames without interacting, for later use
 
-  * a user's followers or following
-  * a hashtag's top or recent post likers
-  * a hashtag's top or recent posts
-  * a place's top or recent post likers
-  * a place's top or recent posts
-  * a specific user's post likers
-  * a single blogger
-  * your own feed
-  * a list of users from a `.txt` file
-  * posts from a list of links in a `.txt` file
-  * unfollow any followers
-  * unfollow followers the bot itself followed
-  * unfollow followers the bot followed who don't follow back
-  * unfollow from a `.txt` list
-  * scrape mode — collect usernames without interacting, for later use
-* Extensive filters for who gets interacted with:
-
-  * blacklist / whitelist
-  * biography character set and language
-  * profile name character set
-  * private / public / business / non-business accounts
-  * post count / follower count / following count
-  * ...and more
+- Extensive filters for who gets interacted with:
+  - blacklist / whitelist
+  - biography character set and language
+  - profile name character set
+  - private / public / business / non-business accounts
+  - post count / follower count / following count
+  - ...and more
 
 Full documentation: [docs.gramaddict.org](https://docs.gramaddict.org/) (shared with the upstream project — most configuration concepts still apply directly).
 
@@ -196,10 +195,10 @@ Get session activity reports sent straight to Telegram. [Setup guide here](https
 
 ## What you need
 
-* A computer (Windows, macOS, or Linux)
-* **Python 3.13.14**
-* adb (Android Debug Bridge)
-* A physical Android device or an emulator (Android 4.4+)
+- A computer (Windows, macOS, or Linux)
+- **Python 3.13.14**
+- adb (Android Debug Bridge)
+- A physical Android device or an emulator (Android 4.4+)
 
 ## Step 1: Install Python
 
@@ -207,8 +206,8 @@ Get session activity reports sent straight to Telegram. [Setup guide here](https
 
 We recommend using **Python 3.13.14** for the most reliable installation and runtime experience.
 
-* **macOS/Linux:** install Python 3.13.14 and verify with `python3 --version`
-* **Windows:** [download Python 3.13.14](https://www.python.org/downloads/release/python-31314/) and make sure to check **"Add Python to PATH"** during installation.
+- **macOS/Linux:** install Python 3.13.14 and verify with `python3 --version`
+- **Windows:** [download Python 3.13.14](https://www.python.org/downloads/release/python-31314/) and make sure to check **"Add Python to PATH"** during installation.
 
 Verify your installation:
 
@@ -252,19 +251,19 @@ python3 -m venv .venv
 
 Activate it:
 
-* Linux/macOS:
+- Linux/macOS:
 
 ```bash
 source .venv/bin/activate
 ```
 
-* Windows cmd:
+- Windows cmd:
 
 ```bat
 .venv\Scripts\activate.bat
 ```
 
-* Windows PowerShell:
+- Windows PowerShell:
 
 ```powershell
 .venv\Scripts\Activate.ps1
@@ -297,9 +296,8 @@ pip3 install -r requirements.txt
 1. Download [platform-tools](https://developer.android.com/studio/releases/platform-tools) and unzip it somewhere permanent — not `Downloads`, since that folder tends to get cleared out and will quietly break your setup later.
 
 2. Add the `platform-tools` folder to your `PATH`:
-
-   * **Linux/macOS:** add `export PATH=~/Library/Android/sdk/platform-tools/:$PATH` (adjust the path to wherever you unzipped it) to `~/.bash_profile` or `~/.zshrc`, then restart your terminal.
-   * **Windows:** System Properties → Advanced → Environment Variables → edit `Path`, add the full `platform-tools` folder path. **Open a brand-new terminal window afterward** — an already-open terminal won't pick up the change.
+   - **Linux/macOS:** add `export PATH=~/Library/Android/sdk/platform-tools/:$PATH` (adjust the path to wherever you unzipped it) to `~/.bash_profile` or `~/.zshrc`, then restart your terminal.
+   - **Windows:** System Properties → Advanced → Environment Variables → edit `Path`, add the full `platform-tools` folder path. **Open a brand-new terminal window afterward** — an already-open terminal won't pick up the change.
 
 3. Verify:
 
@@ -365,7 +363,7 @@ If the `accounts/your_ig_username/` folder doesn't exist yet, it's created autom
 
 3. Configuration reference: [docs.gramaddict.org](https://docs.gramaddict.org/#/configuration)
 
-Still stuck? See [Common setup issues](#common-setup-issues), or ask in [Discord](https://discord.gg/PvxsP8HFa).
+Still stuck? See [Common setup issues](#common-setup-issues), or ask in [Discord](https://discord.gg/EDZUdbNnyY).
 
 <br />
 
@@ -427,17 +425,17 @@ InstaAddict is 100% free and open source, and maintaining it takes real time —
 
 # Bot crashed — what do I do?
 
-This isn't a perfect science — Instagram's UI shifts under us regularly, so things do break sometimes. Open a ticket in [#crash-reports on Discord](https://discord.gg/PvxsP8HFa) rather than posting your Instagram username publicly on GitHub. Attach the crash zip from your `crashes/` folder — that's usually enough for us to pin down what changed.
+This isn't a perfect science — Instagram's UI shifts under us regularly, so things do break sometimes. Open a ticket in [#crash-reports on Discord](https://discord.gg/EDZUdbNnyY) rather than posting your Instagram username publicly on GitHub. Attach the crash zip from your `crashes/` folder — that's usually enough for us to pin down what changed.
 
 # Talk botty with us
 
-Join the [Discord community](https://discord.gg/PvxsP8HFa) — support, dev discussion, a `#showcase` channel for your growth results, and a live feed of what's happening on the repo.
+Join the [Discord community](https://discord.gg/EDZUdbNnyY) — support, dev discussion, a `#showcase` channel for your growth results, and a live feed of what's happening on the repo.
 
 # Can I help this project grow?
 
-* ⭐ Star the repo — it's a small thing that genuinely helps visibility.
-* 🐛 File an issue if something's broken, especially "this used to work and now it doesn't."
-* 🛠 If you want to contribute code — see [CONTRIBUTING.md](CONTRIBUTING.md).
+- ⭐ Star the repo — it's a small thing that genuinely helps visibility.
+- 🐛 File an issue if something's broken, especially "this used to work and now it doesn't."
+- 🛠 If you want to contribute code — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
