@@ -2100,15 +2100,83 @@ class OpenedPostView:
         )
         return video_container.exists(), video_container
 
+    def _in_clips_viewer(self) -> bool:
+        return self.device.find(
+            resourceIdMatches=case_insensitive_re(ResourceID.CLIPS_VIEWER_CONTAINER)
+        ).exists()
+
+    def _feed_like_button(self, reveal: bool) -> Optional[DeviceFacade.View]:
+        """
+        The heart under a video opened from a profile grid. Unlike the Reels
+        viewer heart it reports its state ("Liked"). `reveal` scrolls a little
+        when a tall video pushes it below the screen; never use it inside the
+        Reels viewer, where a swipe moves to the next reel.
+        """
+        attempt = 0
+        while True:
+            like_button = self.device.find(
+                resourceIdMatches=case_insensitive_re(ResourceID.ROW_FEED_BUTTON_LIKE)
+            )
+            if like_button.exists():
+                return like_button
+            if not reveal or attempt == 3:
+                return None
+            UniversalActions(self.device)._swipe_points(
+                direction=Direction.DOWN, delta_y=250
+            )
+            attempt += 1
+
+    def _heart_is_red(self, like_button: DeviceFacade.View) -> bool:
+        """
+        IG 451's Reels viewer heart keeps content-desc "Like" and
+        selected=False after a like, so only its colour tells. Measured on the
+        S10e: liked heart ~0.59 of the inner box is IG red, unliked 0.0.
+        """
+        try:
+            bounds = like_button.get_bounds()
+            image = self.device.deviceV2.screenshot().convert("RGB")
+        except Exception as e:
+            logger.debug(f"Can't read the heart colour: {e}")
+            return False
+        width = bounds["right"] - bounds["left"]
+        height = bounds["bottom"] - bounds["top"]
+        if width <= 0 or height <= 0:
+            return False
+        box = image.crop(
+            (
+                bounds["left"] + width * 0.2,
+                bounds["top"] + height * 0.2,
+                bounds["right"] - width * 0.2,
+                bounds["bottom"] - height * 0.2,
+            )
+        )
+        data = box.tobytes()
+        total = len(data) // 3
+        red = sum(
+            1
+            for r, g, b in zip(data[0::3], data[1::3], data[2::3])
+            if r >= 200 and g <= 90 and b <= 120
+        )
+        ratio = red / total if total else 0
+        logger.debug(f"Heart red ratio: {ratio:.2f}")
+        return ratio >= 0.25
+
     def _is_video_liked(self) -> Tuple[Optional[bool], Optional[DeviceFacade.View]]:
         """
         Check if video has been liked
         """
+        # PATCHED by vaspoukaz (IG 451): prefer the feed heart, whose state is
+        # readable; the Reels viewer heart only shows it by colour.
+        if not self._in_clips_viewer():
+            feed_like_button = self._feed_like_button(reveal=False)
+            if feed_like_button is not None:
+                return feed_like_button.get_selected(), feed_like_button
         like_button = self.device.find(
             resourceIdMatches=case_insensitive_re(ResourceID.LIKE_BUTTON)
         )
         if like_button.exists():
-            return like_button.get_selected(), like_button
+            liked = like_button.get_selected() or self._heart_is_red(like_button)
+            return liked, like_button
         return False, None
 
     def _has_tags(self) -> bool:
@@ -2133,6 +2201,26 @@ class OpenedPostView:
             logger.info("Liking video.")
             obj.double_click()
             UniversalActions.detect_block(self.device)
+            # PATCHED by vaspoukaz (IG 451): a video opened from a profile grid
+            # plays inline. Verify on its own heart and stay there; the tap below
+            # used to open the Reels viewer, whose heart always read "Like", so
+            # the bot tapped it and could unlike what the double click liked.
+            if not self._in_clips_viewer():
+                feed_like_button = self._feed_like_button(reveal=True)
+                if feed_like_button is not None:
+                    liked = feed_like_button.get_selected()
+                    if not liked:
+                        logger.info(
+                            "Double click failed, clicking on the little heart ❤️."
+                        )
+                        feed_like_button.click()
+                        UniversalActions.detect_block(self.device)
+                        feed_like_button = self._feed_like_button(reveal=False)
+                        liked = (
+                            feed_like_button is not None
+                            and feed_like_button.get_selected()
+                        )
+                    return liked
             if not sidebar.exists():
                 logger.debug("Showing sidebar...")
                 obj.click()

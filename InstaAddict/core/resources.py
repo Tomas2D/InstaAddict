@@ -29,6 +29,7 @@ class ResourceID:
             f"{APP_ID}:id/carousel_index_indicator_text_view"
         )
         self.CLIPS_VIDEO_CONTAINER = f"{APP_ID}:id/clips_video_container"
+        self.CLIPS_VIEWER_CONTAINER = f"{APP_ID}:id/clips_viewer_container"
         self.COLLECTION_ROOT_VIEW = f"{APP_ID}:id/collection_root_view"
         self.COORDINATOR_ROOT_LAYOUT = f"{APP_ID}:id/coordinator_root_layout"
         self.DIALOG_ROOT_VIEW = f"{APP_ID}:id/dialog_root_view"
