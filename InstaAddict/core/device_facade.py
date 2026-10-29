@@ -703,7 +703,12 @@ class DeviceFacade:
                 if self.viewV2.exists():
                     info = self.viewV2.info
                     logger.debug(f"DEBUG like button info {info}")
-                    return info["selected"]
+                    # IG 451 no longer sets `selected` on a liked heart; only the
+                    # content description flips "Like" -> "Liked". Reading just
+                    # `selected` reports every like as failed and re-taps the
+                    # heart of an already liked post, which unlikes it.
+                    desc = (info.get("contentDescription") or "").strip().casefold()
+                    return bool(info["selected"]) or desc in ("liked", "unlike")
                 logger.debug(
                     "Object has disappeared! Probably too short video which has been liked!"
                 )
