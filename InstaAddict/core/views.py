@@ -1949,7 +1949,12 @@ class OpenedPostView:
                     direction=Direction.DOWN, delta_y=100
                 )
                 attempt += 1
-        return None
+        # PATCHED by vaspoukaz (IG 451): the flat post layout has no media
+        # container, so the heart was never found, an already liked post looked
+        # unliked, and like_post() tapped its heart, which unliked it.
+        if self._in_clips_viewer():
+            return None
+        return self._feed_like_button(reveal=True)
 
     def _is_post_liked(self) -> Tuple[Optional[bool], Optional[DeviceFacade.View]]:
         """
@@ -1978,6 +1983,10 @@ class OpenedPostView:
                 resourceIdMatches=case_insensitive_re(ResourceID.ROW_FEED_BUTTON_LIKE)
             )
             if like_button.exists(Timeout.SHORT):
+                # PATCHED by vaspoukaz: the heart toggles, never tap a liked one.
+                if like_button.get_selected():
+                    logger.info("Post is already liked, not touching the heart.")
+                    return True
                 logger.info("Liking post via the little heart ❤️.")
                 like_button.click()
                 UniversalActions.detect_block(self.device)
